@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Col, Modal, Button, Form } from "react-bootstrap";
+import { Col, Modal, Button, Form, Spinner } from "react-bootstrap";
 import CustomTable from "../Components/CustomTable";
 import { MdModeEditOutline } from "react-icons/md";
+import toast, { Toaster } from "react-hot-toast";
 
 const CST = () => {
   const [data, setData] = useState([]);
@@ -9,10 +10,11 @@ const CST = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const columns = [
     { header: "Platform", field: "source_type" },
-    { header: "Comment Category", field: "classification_category" }, //
+    { header: "Comment Category", field: "classification_category" },
     { header: "SPOC", field: "spoc_from_brand" },
     {
       header: "Title",
@@ -41,33 +43,35 @@ const CST = () => {
   ];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://bi_social_tool.mfilterit.net/get_colgate_table_fields"
-        );
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          "https://bi_social_tool.mfilterit.net/get_colgate_categories"
-        );
-        const result = await response.json();
-        setCategories(result);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
     fetchData();
     fetchCategories();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "https://bi_social_tool.mfilterit.net/get_colgate_table_fields"
+      );
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(
+        "https://bi_social_tool.mfilterit.net/get_colgate_categories"
+      );
+      const result = await response.json();
+      setCategories(result);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
@@ -86,20 +90,20 @@ const CST = () => {
           },
           body: JSON.stringify({
             ProductID: selectedRow.id,
-            current_category: selectedRow.classification_category,
-            new_category: selectedCategory,
+            Category: selectedCategory,
           }),
         }
       );
 
-      if (response.ok) {
-        const updatedData = data.data.map((item) =>
-          item === selectedRow ? { ...item, category: selectedCategory } : item
-        );
-        setData({ ...data, data: updatedData });
+      const result = await response.json();
+
+      if (result.status === "Success") {
+        toast.success(result.message);
         setShowModal(false);
+        fetchData();
       } else {
         console.error("Failed to update category");
+        fetchData();
       }
     } catch (error) {
       console.error("Error updating category:", error);
@@ -108,7 +112,9 @@ const CST = () => {
 
   return (
     <div className="test">
-      <CustomTable columns={columns} data={data?.data} />
+      <CustomTable loading={loading} columns={columns} data={data?.data} />
+
+      <Toaster />
       {selectedRow && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
