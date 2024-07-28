@@ -13,8 +13,8 @@ const CST = () => {
   const [loading, setLoading] = useState(true);
 
   const columns = [
-    { header: "Platform", field: "source_type" },
-    { header: "Comment Category", field: "classification_category" },
+    { header: "Platform", field: "platform" },
+    { header: "Comment Category", field: "comment_category" },
     { header: "SPOC", field: "spoc_from_brand" },
     {
       header: "Title",
@@ -24,10 +24,10 @@ const CST = () => {
       header: "Content",
       field: "content",
     },
-    { header: "Priority", field: "importance" },
-    { header: "Relevency", field: "relevance" },
+    { header: "Priority", field: "priority" },
+    { header: "Relevency", field: "relevency" },
     { header: "Reply Required", field: "reply_required" },
-    { header: "Comment Author", field: "source_name" },
+    { header: "Comment Author", field: "comment_author" },
     {
       header: "Action",
       field: "action",
