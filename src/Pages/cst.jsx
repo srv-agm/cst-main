@@ -167,6 +167,7 @@ const CST = () => {
     <div className="test">
       <div className="button-container">
         <Button
+          title="Filters"
           style={{ backgroundColor: "purple" }}
           variant="primary"
           className="filter-icon"
