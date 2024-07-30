@@ -262,7 +262,7 @@ const CST = () => {
       {selectedRow && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Change Category</Modal.Title>
+            <Modal.Title>Change Category/Status</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group>
