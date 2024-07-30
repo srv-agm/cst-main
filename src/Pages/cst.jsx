@@ -3,6 +3,8 @@ import { Col, Modal, Button, Form, Spinner } from "react-bootstrap";
 import CustomTable from "../Components/CustomTable";
 import { MdModeEditOutline } from "react-icons/md";
 import toast, { Toaster } from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 const CST = () => {
   const [data, setData] = useState([]);
@@ -18,11 +20,20 @@ const CST = () => {
     { header: "Checker", field: "checker" },
     { header: "Title", field: "title" },
     { header: "Content", field: "content" },
-    { header: "URL", field: "url", cell: (row) => (
-        <a href={row.url} target="_blank" rel="noopener noreferrer">
-          {row.url}
+    {
+      header: "URL",
+      field: "url",
+      cell: (row) => (
+        <a
+          href={row.url}
+          title={row.url}
+          style={{ color: "purple" }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FontAwesomeIcon icon={faLink} />
         </a>
-      ) 
+      ),
     },
     { header: "Priority", field: "priority" },
     { header: "Relevancy", field: "relevancy" },
@@ -77,7 +88,7 @@ const CST = () => {
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
-    setSelectedCategory(row.comment_category);  // Set selected category to the comment_category of the row
+    setSelectedCategory(row.comment_category); // Set selected category to the comment_category of the row
     setShowModal(true);
   };
 
