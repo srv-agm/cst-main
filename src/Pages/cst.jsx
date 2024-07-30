@@ -72,7 +72,7 @@ const CST = () => {
 
   const handleEditClick = (row) => {
     setSelectedRow(row);
-    setSelectedCategory(row.category);
+    setSelectedCategory(row.comment_category);  // Set selected category to the comment_category of the row
     setShowModal(true);
   };
 
