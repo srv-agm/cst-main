@@ -18,7 +18,12 @@ const CST = () => {
     { header: "Checker", field: "checker" },
     { header: "Title", field: "title" },
     { header: "Content", field: "content" },
-    { header: "URL", field: "url" },
+    { header: "URL", field: "url", cell: (row) => (
+        <a href={row.url} target="_blank" rel="noopener noreferrer">
+          {row.url}
+        </a>
+      ) 
+    },
     { header: "Priority", field: "priority" },
     { header: "Relevancy", field: "relevancy" },
     { header: "Reply Required", field: "reply_required" },
