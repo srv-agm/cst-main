@@ -22,6 +22,7 @@ const CustomTable = ({
   onView,
   onDel,
   onDown = () => {},
+  onRowClick, // Add this prop
   loading = false,
 }) => {
   const calculateGrandTotal = (data, field) => {
@@ -114,6 +115,8 @@ const CustomTable = ({
                 className={`${hover ? "hover" : ""} ${
                   striped ? "striped" : ""
                 }`}
+                onClick={() => onRowClick?.(row, rowIndex)} // Add click handler
+                style={{ cursor: "pointer" }} // Optional: Show pointer cursor
               >
                 {columns.map((col, colIndex) => (
                   <td style={cellStyle} key={colIndex}>
@@ -125,7 +128,10 @@ const CustomTable = ({
                     {isEdit && (
                       <span
                         style={{ cursor: "pointer", marginRight: "10px" }}
-                        onClick={() => onEdit?.(row, rowIndex)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEdit?.(row, rowIndex);
+                        }}
                         className="svg-icon svg-icon-md svg-icon-primary"
                       >
                         <MdModeEditOutline color="#A21094" />
@@ -134,7 +140,10 @@ const CustomTable = ({
                     {isDelete && (
                       <span
                         style={{ cursor: "pointer", marginRight: "10px" }}
-                        onClick={() => onDel?.(row, rowIndex)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDel?.(row, rowIndex);
+                        }}
                         className="svg-icon svg-icon-md svg-icon-primary"
                       >
                         <AiOutlineDelete color="#A21094" />
@@ -143,7 +152,10 @@ const CustomTable = ({
                     {isDownload && (
                       <span
                         style={{ cursor: "pointer", marginRight: "10px" }}
-                        onClick={() => onDown?.(row, rowIndex)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDown?.(row, rowIndex);
+                        }}
                         className="svg-icon svg-icon-md svg-icon-primary"
                       >
                         <AiOutlineDownload color="#A21094" />
@@ -160,7 +172,10 @@ const CustomTable = ({
                     {isView && (
                       <span
                         style={{ cursor: "pointer", marginRight: "10px" }}
-                        onClick={() => onView?.(row, rowIndex)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onView?.(row, rowIndex);
+                        }}
                         className="svg-icon svg-icon-md svg-icon-primary"
                       >
                         <MdVisibility color="#A21094" />

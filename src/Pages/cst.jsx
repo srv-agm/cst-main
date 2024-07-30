@@ -125,9 +125,19 @@ const CST = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("Selected Status:", selectedStatus);
+  }, [selectedStatus]);
+
+  const handleRowClick = (row) => {
+    setSelectedRow(row);
+    setShowModal(true);
+  };
+
   const handleEditClick = (row) => {
     setSelectedRow(row);
     setSelectedCategory(row.comment_category);
+    setSelectedStatus(row.status);
     setShowModal(true);
   };
 
@@ -241,8 +251,14 @@ const CST = () => {
         </Offcanvas.Body>
       </Offcanvas>
 
-      <CustomTable loading={loading} columns={columns} data={data?.data} />
+      <CustomTable
+        loading={loading}
+        columns={columns}
+        data={data?.data}
+        onRowClick={handleRowClick}
+      />
       <Toaster />
+
       {selectedRow && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
