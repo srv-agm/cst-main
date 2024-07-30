@@ -16,3 +16,20 @@ code {
   margin-left: 16rem;
   padding: 1vh;
 }
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Aligns the button to the end of the container */
+  margin-bottom: 1rem; /* Adds some space below the button container */
+}
+
+.filter-icon {
+  background-color: purple; /* Sets the background color of the button */
+  border: none; /* Removes the default button border */
+  color: white; /* Sets the text color of the button */
+  padding: 0.5rem 1rem; /* Adds some padding around the button */
+}
+
+.filter-icon:hover {
+  background-color: darkviolet; /* Changes color on hover (optional) */
+}
