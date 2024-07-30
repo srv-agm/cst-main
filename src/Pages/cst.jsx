@@ -15,19 +15,16 @@ const CST = () => {
   const columns = [
     { header: "Platform", field: "platform" },
     { header: "Comment Category", field: "comment_category" },
-    { header: "SPOC", field: "spoc_from_brand" },
-    {
-      header: "Title",
-      field: "title",
-    },
-    {
-      header: "Content",
-      field: "content",
-    },
+    { header: "Checker", field: "checker" },
+    { header: "Title", field: "title" },
+    { header: "Content", field: "content" },
+    { header: "URL", field: "url" },
     { header: "Priority", field: "priority" },
-    { header: "Relevency", field: "relevency" },
+    { header: "Relevancy", field: "relevancy" },
     { header: "Reply Required", field: "reply_required" },
     { header: "Comment Author", field: "comment_author" },
+    { header: "Modified By", field: "modified_by" },
+    { header: "Status", field: "status" },
     {
       header: "Action",
       field: "action",
@@ -113,7 +110,6 @@ const CST = () => {
   return (
     <div className="test">
       <CustomTable loading={loading} columns={columns} data={data?.data} />
-
       <Toaster />
       {selectedRow && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
