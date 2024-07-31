@@ -4,11 +4,7 @@ import CustomTable from "../Components/CustomTable";
 import { MdModeEditOutline } from "react-icons/md";
 import toast, { Toaster } from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLink,
-  faCalendarDays,
-  faFilter,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLink, faCalendarDays, faFilter } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,7 +31,6 @@ const CST = () => {
     { header: "Platform", field: "platform" },
     { header: "Comment Category", field: "comment_category" },
     { header: "Checker", field: "checker" },
-    { header: "Title", field: "title" },
     { header: "Content", field: "content" },
     {
       header: "URL",
@@ -52,12 +47,6 @@ const CST = () => {
         </a>
       ),
     },
-    { header: "Priority", field: "priority" },
-    { header: "Relevancy", field: "relevancy" },
-    { header: "Reply Required", field: "reply_required" },
-    { header: "Comment Author", field: "comment_author" },
-    { header: "Modified By", field: "modified_by" },
-    { header: "Status", field: "status" },
     {
       header: "Action",
       field: "action",
@@ -131,6 +120,8 @@ const CST = () => {
 
   const handleRowClick = (row) => {
     setSelectedRow(row);
+    setSelectedCategory(row.comment_category);
+    setSelectedStatus(row.status); // Ensure selectedStatus is updated here as well
     setShowModal(true);
   };
 
@@ -171,6 +162,12 @@ const CST = () => {
     } catch (error) {
       console.error("Error updating category:", error);
     }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedStatus(""); // Reset selectedStatus when modal is closed
+    setSelectedCategory(""); // Reset selectedCategory when modal is closed
   };
 
   return (
@@ -260,9 +257,9 @@ const CST = () => {
       <Toaster />
 
       {selectedRow && (
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal show={showModal} onHide={handleModalClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Change Category/Status</Modal.Title>
+            <Modal.Title>View Details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group>
@@ -292,10 +289,19 @@ const CST = () => {
                 <option value="Closed">Closed</option>
               </Form.Control>
             </Form.Group>
+            <hr />
+            <div>
+              <h6><b>Comment Author:</b> {selectedRow.comment_author}</h6>
+              <h6><b>Title:</b> {selectedRow.title}</h6>
+              <h6><b>Priority:</b> {selectedRow.priority}</h6>
+              <h6><b>Relevancy:</b> {selectedRow.relevancy}</h6>
+              <h6><b>Reply Required:</b> {selectedRow.reply_required}</h6>
+              <h6><b>Modified By:</b> {selectedRow.modified_by}</h6>
+            </div>
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
+            <Button variant="secondary" onClick={handleModalClose}>
               Close
             </Button>
             <Button variant="primary" onClick={handleSave}>
