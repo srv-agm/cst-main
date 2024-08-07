@@ -254,7 +254,7 @@ const CST = () => {
         data={data?.data}
         onRowClick={handleRowClick}
       />
-      <Toaster />
+      <Toaster /> 
 
       {selectedRow && (
         <Modal show={showModal} onHide={handleModalClose}>
