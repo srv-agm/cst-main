@@ -16,7 +16,7 @@ const CST = () => {
   const defaultEndDate = new Date();
   const defaultStartDate = new Date();
   defaultStartDate.setDate(defaultStartDate.getDate() - 7);
-
+// dfas
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [platforms, setPlatforms] = useState([]);
