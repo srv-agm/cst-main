@@ -4,7 +4,11 @@ import CustomTable from "../Components/CustomTable";
 import { MdModeEditOutline } from "react-icons/md";
 import toast, { Toaster } from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink, faCalendarDays, faFilter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLink,
+  faCalendarDays,
+  faFilter,
+} from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -16,6 +20,8 @@ const CST = () => {
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [platforms, setPlatforms] = useState([]);
+  const [checker, setchecker] = useState([]);
+  const [priority, setpriority] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -26,6 +32,8 @@ const CST = () => {
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [status, setStatus] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("");
+  const [selectedCheckers, setSelectedCheckers] = useState("");
 
   const columns = [
     { header: "Platform", field: "platform" },
@@ -65,7 +73,9 @@ const CST = () => {
     fetchData();
     fetchCategories();
     fetchPlatforms();
-  }, [startDate, endDate, status, selectedPlatform]);
+    fetchCheckers();
+    fetchPriority();
+  }, [startDate, endDate, status, selectedPlatform, selectedPriority , selectedCheckers]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -75,6 +85,8 @@ const CST = () => {
         endDate: endDate ? endDate.toISOString().split("T")[0] : "",
         status,
         platform: selectedPlatform,
+        priority: selectedPriority,
+        checker: selectedCheckers,
       }).toString();
 
       const response = await fetch(
@@ -114,6 +126,30 @@ const CST = () => {
     }
   };
 
+  const fetchPriority = async () => {
+    try {
+      const response = await fetch(
+        "https://bi_social_tool.mfilterit.net/get_colgate_priorities"
+      );
+      const result = await response.json();
+      setpriority(result.priorities);
+    } catch (error) {
+      console.error("Error fetching platforms:", error);
+    }
+  };
+
+  const fetchCheckers = async () => {
+    try {
+      const response = await fetch(
+        "https://bi_social_tool.mfilterit.net/get_colgate_checkers"
+      );
+      const result = await response.json();
+      setchecker(result.checkers);
+    } catch (error) {
+      console.error("Error fetching platforms:", error);
+    }
+  };
+
   useEffect(() => {
     console.log("Selected Status:", selectedStatus);
   }, [selectedStatus]);
@@ -144,7 +180,7 @@ const CST = () => {
           body: JSON.stringify({
             ProductID: selectedRow.id,
             Category: selectedCategory,
-            Status: selectedStatus, // Include the selected status
+            Status: selectedStatus, 
           }),
         }
       );
@@ -244,6 +280,36 @@ const CST = () => {
                 ))}
               </Form.Control>
             </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Priority</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedPriority}
+                onChange={(e) => setSelectedPriority(e.target.value)}
+              >
+                <option value="">Select Priority</option>
+                {priority.map((platform) => (
+                  <option key={platform.key} value={platform.value}>
+                    {platform.key}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Checkers</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedCheckers}
+                onChange={(e) => setSelectedCheckers(e.target.value)}
+              >
+                <option value="">Select Checkers</option>
+                {checker.map((platform) => (
+                  <option key={platform.key} value={platform.value}>
+                    {platform.key}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
           </Form>
         </Offcanvas.Body>
       </Offcanvas>
@@ -254,7 +320,7 @@ const CST = () => {
         data={data?.data}
         onRowClick={handleRowClick}
       />
-      <Toaster /> 
+      <Toaster />
 
       {selectedRow && (
         <Modal show={showModal} onHide={handleModalClose}>
@@ -291,12 +357,24 @@ const CST = () => {
             </Form.Group>
             <hr />
             <div>
-              <h6><b>Comment Author:</b> {selectedRow.comment_author}</h6>
-              <h6><b>Title:</b> {selectedRow.title}</h6>
-              <h6><b>Priority:</b> {selectedRow.priority}</h6>
-              <h6><b>Relevancy:</b> {selectedRow.relevancy}</h6>
-              <h6><b>Reply Required:</b> {selectedRow.reply_required}</h6>
-              <h6><b>Modified By:</b> {selectedRow.modified_by}</h6>
+              <h6>
+                <b>Comment Author:</b> {selectedRow.comment_author}
+              </h6>
+              <h6>
+                <b>Title:</b> {selectedRow.title}
+              </h6>
+              <h6>
+                <b>Priority:</b> {selectedRow.priority}
+              </h6>
+              <h6>
+                <b>Relevancy:</b> {selectedRow.relevancy}
+              </h6>
+              <h6>
+                <b>Reply Required:</b> {selectedRow.reply_required}
+              </h6>
+              <h6>
+                <b>Modified By:</b> {selectedRow.modified_by}
+              </h6>
             </div>
           </Modal.Body>
 
